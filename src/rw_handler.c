@@ -92,7 +92,7 @@ static int do_read_request(char *path, char *outbuf)
         p = strtok(NULL, "/");
     }
     
-    printf("Reading %d bytes from 0x%08X\n", l, (uint32_t)addr);
+    printf("Reading %d bytes from 0x%08lX\n", l, (uint32_t)addr);
     
     for (int i = 0; i < l; i++)
     {
@@ -142,7 +142,7 @@ static int do_write_request(char *path)
         p = strtok(NULL, "/");
     }
     
-    printf("Wrote %d bytes from 0x%08X\n", buf_l, (uint32_t)addr);
+    printf("Wrote %d bytes from 0x%08lX\n", buf_l, (uint32_t)addr);
     
     free(dup);
 	return l;

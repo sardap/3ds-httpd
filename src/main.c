@@ -1,6 +1,6 @@
 #include "httpserver.h"
 
-int		main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	init();
 	do
