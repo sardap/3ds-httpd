@@ -12,7 +12,7 @@ void			socShutdown()
 	socExit();
 }
 
-void			init()
+void			init(int port)
 {
 	hidInit(); // input
     psInit(); // ps, for AES
@@ -42,12 +42,12 @@ void			init()
 
 	// Init server_addr on default address and port 8081
 	data.server_addr.sin_family = AF_INET;
-	data.server_addr.sin_port = htons(8081);
+	data.server_addr.sin_port = htons(port);
 	data.server_addr.sin_addr.s_addr = gethostid();
 	data.client_length = sizeof(data.client_addr);
 
 	// Print network info
-	printf("Server is running http://%s/\n", inet_ntoa(data.server_addr.sin_addr));
+	printf("Server is starting - http://%s:%i/\nPress X to change port or START to exit\n", inet_ntoa(data.server_addr.sin_addr),port);
 
 	if ((ret = bind(data.server_id, (struct sockaddr *) &data.server_addr, sizeof(data.server_addr))))
 	{
