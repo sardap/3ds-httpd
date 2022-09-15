@@ -124,6 +124,8 @@ char				*get_http_code_name(int code)
 			return "Requested Range Not Satisfiable";
 		case 417:
 			return "Expectation Failed";
+		case 418:
+			return "I'm a teapot";
 		case 500:
 			return "Internal Server Error";
 		case 501:
