@@ -4,12 +4,6 @@ on: workflow_dispatch
 
 jobs:
   build:
-    env:
-      COMMIT_TAG: 1.0.0
-      COMMIT_HASH: 1.0.0
-      AUTHOR_NAME: SciresM
-      COMMIT_SUBJECT: "Cool."
-      COMMIT_MESSAGE: "Cool."
     runs-on: ubuntu-latest
     container: devkitpro/devkitarm
     name: Build with Docker using devkitARM
@@ -29,35 +23,25 @@ jobs:
           sudo chmod +x bannertool
           mv bannertool /usr/local/bin
           rm bannertool.zip
-          curl -L https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.17/makerom-v0.17-ubuntu_x86_64.zip -o makerom-v0.17-ubuntu_x86_64.zip
-          sudo 7z e makerom-v0.17-ubuntu_x86_64.zip
+          curl -L https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.18.3/makerom-v0.18.3-ubuntu_x86_64.zip -o makerom.zip
+          sudo 7z e makerom.zip
           sudo chmod +x makerom
           mv makerom /usr/local/bin
-          rm makerom-v0.17-ubuntu_x86_64.zip
+          rm makerom.zip
       - name: Build
         id: build
         run: |
           make
+          bannertool makebanner -i assets/banner.png -a assets/banner.wav -o banner.bnr
+          bannertool makesmdh -s "httpd" -l "3ds-httpd" -p "Dimaguy" -i assets/icon.png -o icon.icn
+          makerom -f cia -o 3ds-httpd.cia -rsf assets/httpd.rsf -target t -exefslogo -elf 3ds-httpd.elf -icon icon.icn -banner banner.bnr
           mkdir -p ~/artifacts
           cp 3ds-httpd.3dsx ~/artifacts
+          cp 3ds-httpd.elf ~/artifacts
+          cp 3ds-httpd.smdh ~/artifacts
+          cp 3ds-httpd.cia ~/artifacts
       - name: Publish build to GH Actions
         uses: actions/upload-artifact@v2
         with:
           path: ~/artifacts/*
           name: build
-      - name: Commit and push
-        id: commit
-        run: |
-          CURRENT_DATE=$(date +"%Y%m%d-%H%M%S")
-          echo ::set-output name=current_date::$CURRENT_DATE
-          git config --global user.email "bot@example.com"
-          git config --global user.name "A cool bot"
-          git clone --depth 1 https://github.com/ManiacOfGitHub/3ds-httpd.git
-          mkdir -p 3ds-httpd/builds/3ds-httpd/
-          cd 3ds-httpd/builds/3ds-httpd/
-          qrencode -o 3ds-httpd-release.png https://maniacofgithub.github.io/3ds-httpd/builds/3ds-httpd/3ds-httpd.cia
-          cp ~/artifacts/* .
-          git stage .
-          git commit -m "Another file for the 3ds | $COMMIT_HASH"
-          git tag v$CURRENT_DATE
-          git push origin main v$CURRENT_DATE
