@@ -91,9 +91,10 @@ static int do_read_request(char *path, char *outbuf)
         }
         p = strtok(NULL, "/");
     }
-    
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
     printf("Reading %d bytes from 0x%08lX\n", l, (uint32_t)addr);
-    
+    #pragma GCC diagnostic pop
     for (int i = 0; i < l; i++)
     {
         ((uint8_t *)outbuf)[i] = ((uint8_t *)addr)[i];
@@ -132,7 +133,10 @@ static int do_write_request(char *path)
                 buf_l = l/2;
                 while (ofs < l)
                 {
+                    #pragma GCC diagnostic push
+                    #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
                     ptr[ofs/2] = (decode_hex(p[ofs]) << 4) | decode_hex(p[ofs+1]);
+                    #pragma GCC diagnostic pop
                     ofs += 2;
                 }
                 break;
@@ -141,8 +145,10 @@ static int do_write_request(char *path)
         }
         p = strtok(NULL, "/");
     }
-    
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
     printf("Wrote %d bytes from 0x%08lX\n", buf_l, (uint32_t)addr);
+    #pragma GCC diagnostic pop
     
     free(dup);
 	return l;

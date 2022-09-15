@@ -188,7 +188,8 @@ int is_crypt_request(http_request *request)
         }
         p = strtok(NULL, "/");
     }
-    
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
     if (numParams == 4 && !(ktype & 0x40))
     {
         // Do Nothing
@@ -201,7 +202,7 @@ int is_crypt_request(http_request *request)
     {
         valid = 0;
     }
-    
+    #pragma GCC diagnostic pop
     free(dup);
 	return valid;
 }
