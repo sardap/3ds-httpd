@@ -21,6 +21,12 @@ void			init(int port)
 	consoleDebugInit(debugDevice_CONSOLE);
 	init_handlers();
 	socket_buffer = (u32*)memalign(SOC_ALIGN, SOC_BUFFERSIZE);
+	ndmuInit();
+	aptSetSleepAllowed(false);
+	Result res;
+	if(R_FAILED(res = NDMU_EnterExclusiveState(NDM_EXCLUSIVE_STATE_INFRASTRUCTURE)))
+		failExit((char *)res);
+	NDMU_LockState();
 	if (socket_buffer == NULL)
 		failExit("Socket buffer allocation failed!\n");
 
@@ -92,6 +98,10 @@ int				loop()
 
 void			destroy()
 {
+	NDMU_UnlockState();
+	NDMU_LeaveExclusiveState();
+	aptSetSleepAllowed(true);
+	ndmuExit();
 	close(data.server_id);
 	socShutdown();
 	gfxExit();
