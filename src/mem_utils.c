@@ -11,7 +11,7 @@ void					*memalloc(size_t size)
 	return (res);
 }
 
-void					*memdup(void *data, size_t size)
+void					*memdup(const void *data, size_t size)
 {
 	void	*res = memalloc(size);
 	memcpy(res, data, size);

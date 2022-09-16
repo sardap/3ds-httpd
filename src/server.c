@@ -5,10 +5,11 @@ static http_server	data;
 http_server			*app_data = &data;
 static int			ret;
 static char			payload[4098];
+PrintConsole topScreen, bottomScreen;
 
 void			socShutdown()
 {
-	printf("waiting for socExit...\n");
+	printTop("waiting for socExit...\n");
 	socExit();
 }
 
@@ -17,7 +18,8 @@ void			init(int port)
 	hidInit(); // input
     psInit(); // ps, for AES
 	gfxInitDefault(); // graphics
-	consoleInit(GFX_TOP, NULL); // default console
+	consoleInit(GFX_TOP, topScreen); // default console
+	consoleInit(GFX_BOTTOM, bottomScreen);
 	fsInit();
 	consoleDebugInit(debugDevice_CONSOLE);
 	init_handlers();
@@ -54,7 +56,7 @@ void			init(int port)
 	data.client_length = sizeof(data.client_addr);
 
 	// Print network info
-	printf("Server is starting - http://%s:%i/\nPress X to change port or START to exit\n", inet_ntoa(data.server_addr.sin_addr),port);
+	printTop("Server is starting - http://%s:%i/\nPress X to change port or START to exit\n", inet_ntoa(data.server_addr.sin_addr),port);
 
 	if ((ret = bind(data.server_id, (struct sockaddr *) &data.server_addr, sizeof(data.server_addr))))
 	{
@@ -68,7 +70,7 @@ void			init(int port)
 	if ((ret = listen(data.server_id, 5)))
 		failExit("listen: %s (code: %d)\n", strerror(errno), errno);
 	data.running = 1;
-	printf("Ready...\n");
+	printTop("Ready...\n");
 }
 
 int				loop()

@@ -37,9 +37,9 @@ int	main(int ac, char **av)
 					port = atoi(keybuf);
 					destroy();
 					init(port);
-				} else printf("Port needs to be a value between 1-65565\n");
+				} else printTop("Port needs to be a value between 1-65565\n");
 			} else
-				printf("swkbd event: %d\n", swkbdGetResult(&swkbd));
+				printTop("swkbd event: %d\n", swkbdGetResult(&swkbd));
 		}
 		
 		

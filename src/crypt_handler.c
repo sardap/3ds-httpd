@@ -92,7 +92,7 @@ static int do_crypto_request(char *path, char *outbuf)
     int usedkeyslot = (ktype & 0x80) ? (ktype & 0x3F) : (ktypes[ktype]);
     
     
-    printf("Crypto Request: %s, keyslot 0x%X, 0x%X bytes.\n", algos[algo], (int)usedkeyslot, buf_l);
+    printTop("Crypto Request: %s, keyslot 0x%X, 0x%X bytes.\n", algos[algo], (int)usedkeyslot, buf_l);
     
     PS_EncryptDecryptAes((uint32_t)buf_l, (unsigned char *)inbuf, (unsigned char *)outbuf, algo, ktype, iv);
     

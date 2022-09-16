@@ -93,7 +93,7 @@ static int do_read_request(char *path, char *outbuf)
     }
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-    printf("Reading %d bytes from 0x%08lX\n", l, (uint32_t)addr);
+    printTop("Reading %d bytes from 0x%08lX\n", l, (uint32_t)addr);
     #pragma GCC diagnostic pop
     for (int i = 0; i < l; i++)
     {
@@ -147,7 +147,7 @@ static int do_write_request(char *path)
     }
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-    printf("Wrote %d bytes from 0x%08lX\n", buf_l, (uint32_t)addr);
+    printTop("Wrote %d bytes from 0x%08lX\n", buf_l, (uint32_t)addr);
     #pragma GCC diagnostic pop
     
     free(dup);
@@ -228,7 +228,8 @@ http_response *get_write_handler_response(http_request *request)
     
 	http_response *response = memalloc(sizeof(http_response));
 	response->code = 200;
-	response->content_type = strdup("Content-Type: text/html\r\n");
+	const char content_type[] = "Content-Type: text/html\r\n";
+	response->content_type = memdup(content_type, sizeof(content_type));
 	char	*payload = memalloc(1024 * sizeof(char));
 	sprintf(payload, "OK");
 	response->payload = payload;

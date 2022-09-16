@@ -82,14 +82,14 @@ void				manage_connection(http_server *data, char *payload)
 	if (response == NULL)
 	{
 		// copy default response
-		response = memalloc(sizeof(DEFAULT_PAGE));
-		memcpy(response, &DEFAULT_PAGE, sizeof(DEFAULT_PAGE));
-		response->content_type = (char*)memdup(response->content_type, strlen(response->content_type));
-		response->payload = (char*)memdup(response->payload, strlen(response->payload));
-        response->payload_len = strlen(response->payload);
+		response = memalloc(sizeof(http_response));
+		response->code = DEFAULT_PAGE.code;
+		response->content_type = (char*)memdup(DEFAULT_PAGE.content_type, strlen(DEFAULT_PAGE.content_type));
+		response->payload = (char*)memdup(DEFAULT_PAGE.payload, strlen(DEFAULT_PAGE.payload));
+		response->payload_len = strlen(DEFAULT_PAGE.payload);
 	}
 
-	printf("[%d]: %s %s (client: %s)\n", response->code, get_request_name(request->type), request->path, inet_ntoa(data->client_addr.sin_addr));
+	printTop("[%d]: %s %s (client: %s)\n", response->code, get_request_name(request->type), request->path, inet_ntoa(data->client_addr.sin_addr));
 	send_response(data->client_id, response);
 
 	// response isn't needed anymore, delete it!
