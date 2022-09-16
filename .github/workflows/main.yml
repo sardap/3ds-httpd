@@ -1,6 +1,9 @@
-name: Build 3ds application
+name: Launch pre-release
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - "master"
 
 jobs:
   build:
@@ -17,7 +20,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install qrencode -y
           sudo apt-get install p7zip-full -y
-
           curl -L https://github.com/Steveice10/bannertool/releases/download/1.2.0/bannertool.zip -o bannertool.zip
           sudo 7z e bannertool.zip linux-x86_64/bannertool
           sudo chmod +x bannertool
@@ -45,3 +47,15 @@ jobs:
         with:
           path: ~/artifacts/*
           name: build
+      - name: Publish pre-release 
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.RELEASE_TOKEN }}"
+          automatic_release_tag: "nightly"
+          prerelease: true
+          title: "Nightly Build"
+          files: |
+            3ds-httpd.3dsx
+            3ds-httpd.elf
+            3ds-httpd.smdh
+            3ds-httpd.cia

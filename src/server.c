@@ -18,6 +18,7 @@ void			init(int port)
     psInit(); // ps, for AES
 	gfxInitDefault(); // graphics
 	consoleInit(GFX_TOP, NULL); // default console
+	fsInit();
 	consoleDebugInit(debugDevice_CONSOLE);
 	init_handlers();
 	socket_buffer = (u32*)memalign(SOC_ALIGN, SOC_BUFFERSIZE);
