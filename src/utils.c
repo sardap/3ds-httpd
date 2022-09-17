@@ -5,21 +5,21 @@ extern http_server *app_data;
 
 // --------------------------------------------------------------------------
 // console utils
-int printTop(const char * format, ...)
+int printTop(const char *format, ...)
 {
 	va_list ap;
 	consoleSelect(&topScreen);
 	va_start(ap, format);
-	int res = sprintf(format, ap);
+	int res = vprintf(format, ap);
 	va_end(ap);
 	return res;
 }
-int printBottom(const char *str , ...)
+int printBottom(const char *format, ...)
 {
 	va_list ap;
 	consoleSelect(&bottomScreen);
 	va_start(ap, format);
-	int res = sprintf(format, ap);
+	int res = vprintf(format, ap);
 	va_end(ap);
 	return res;
 }
@@ -48,7 +48,7 @@ void					failExit(const char *fmt, ...)
 
 	printTop(CONSOLE_RED);
 	va_start(ap, fmt);
-	sprintf(fmt, ap);
+	vprintf(fmt, ap);
 	va_end(ap);
 	printTop(CONSOLE_RESET);
 	printTop("\nPress B to exit\n");

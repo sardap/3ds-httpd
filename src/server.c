@@ -18,8 +18,8 @@ void			init(int port)
 	hidInit(); // input
     psInit(); // ps, for AES
 	gfxInitDefault(); // graphics
-	consoleInit(GFX_TOP, topScreen); // default console
-	consoleInit(GFX_BOTTOM, bottomScreen);
+	consoleInit(GFX_TOP, &topScreen); // default console
+	consoleInit(GFX_BOTTOM, &bottomScreen);
 	fsInit();
 	consoleDebugInit(debugDevice_CONSOLE);
 	init_handlers();
@@ -70,6 +70,7 @@ void			init(int port)
 	if ((ret = listen(data.server_id, 5)))
 		failExit("listen: %s (code: %d)\n", strerror(errno), errno);
 	data.running = 1;
+	printBottom("Howdy!\n");
 	printTop("Ready...\n");
 }
 
