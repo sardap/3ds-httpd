@@ -16,9 +16,9 @@ void			socShutdown()
 void			init(int port)
 {
 	hidInit(); // input
-    psInit(); // ps, for AES
+	psInit(); // ps, for AES
 	gfxInitDefault(); // graphics
-	consoleInit(GFX_TOP, &topScreen); 
+	consoleInit(GFX_TOP, &topScreen);
 	consoleInit(GFX_BOTTOM, &bottomScreen);
 	fsInit();
 	consoleDebugInit(debugDevice_CONSOLE);
@@ -56,7 +56,7 @@ void			init(int port)
 	data.client_length = sizeof(data.client_addr);
 
 	// Print network info
-	printTop("Server is starting - http://%s:%i/", inet_ntoa(data.server_addr.sin_addr),port);
+	printTop("Server is starting - http://%s:%i/\n", inet_ntoa(data.server_addr.sin_addr),port);
 
 	if ((ret = bind(data.server_id, (struct sockaddr *) &data.server_addr, sizeof(data.server_addr))))
 	{
