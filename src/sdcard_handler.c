@@ -5,9 +5,7 @@ int is_sdcard_handler(http_request *request)
 	if (!(startWith(request->path, "/sdcard/") && strlen(request->path) > 8)) 
 		return 0;
 
-	const char *realPath = strchr(strchr(request->path, '/') + 1, '/');
-
-	return access(realPath, F_OK) == 0;
+	return 1;
 }
 char *do_sdcard_request(char *path)
 {
@@ -15,7 +13,7 @@ char *do_sdcard_request(char *path)
 	
 	FILE *fptr = fopen(realPath,"r");
 	//Thanks to Evie for helping me clean this clusterf*ck
-	
+	if (fptr == NULL) return NULL;
 	fseek(fptr,0,SEEK_END);
 	size_t fileSize = ftell(fptr);
 	printTop("size_t: %u",fileSize);
@@ -40,13 +38,12 @@ char *do_sdcard_request(char *path)
 }
 http_response *get_sdcard_response(http_request *request)
 {
-    http_response *response = memalloc(sizeof(http_response));
-	response->code = 200;
+	http_response *response = memalloc(sizeof(http_response));
+	response->code = (access(strchr(strchr(request->path, '/') + 1, '/'), F_OK) == 0) ? 200 : 404;
 	const char content_type[] = "Content-Type: text/html\r\n";
 	response->content_type = memdup(content_type, sizeof(content_type));
 	char * payload = do_sdcard_request(request->path);
-    response->payload = payload;
+	response->payload = payload;
 	response->payload_len = strlen(payload);
-	// linearFree(payload);
 	return response;    
 }

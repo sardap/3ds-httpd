@@ -18,7 +18,7 @@ void			init(int port)
 	hidInit(); // input
     psInit(); // ps, for AES
 	gfxInitDefault(); // graphics
-	consoleInit(GFX_TOP, &topScreen); // default console
+	consoleInit(GFX_TOP, &topScreen); 
 	consoleInit(GFX_BOTTOM, &bottomScreen);
 	fsInit();
 	consoleDebugInit(debugDevice_CONSOLE);
@@ -28,7 +28,7 @@ void			init(int port)
 	aptSetSleepAllowed(false);
 	Result res;
 	if(R_FAILED(res = NDMU_EnterExclusiveState(NDM_EXCLUSIVE_STATE_INFRASTRUCTURE)))
-		failExit((char *)res);
+		failExit("Failed to enter NDMU Exclusive State");
 	NDMU_LockState();
 	if (socket_buffer == NULL)
 		failExit("Socket buffer allocation failed!\n");
@@ -56,7 +56,7 @@ void			init(int port)
 	data.client_length = sizeof(data.client_addr);
 
 	// Print network info
-	printTop("Server is starting - http://%s:%i/\nPress X to change port or START to exit\n", inet_ntoa(data.server_addr.sin_addr),port);
+	printTop("Server is starting - http://%s:%i/", inet_ntoa(data.server_addr.sin_addr),port);
 
 	if ((ret = bind(data.server_id, (struct sockaddr *) &data.server_addr, sizeof(data.server_addr))))
 	{
@@ -70,7 +70,6 @@ void			init(int port)
 	if ((ret = listen(data.server_id, 5)))
 		failExit("listen: %s (code: %d)\n", strerror(errno), errno);
 	data.running = 1;
-	printBottom("Howdy!\n");
 	printTop("Ready...\n");
 }
 

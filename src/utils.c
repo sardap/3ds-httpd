@@ -24,6 +24,11 @@ int printBottom(const char *format, ...)
 	return res;
 }
 
+void clearBottom() {
+	consoleSelect(&bottomScreen);
+	consoleClear();
+}
+
 // --------------------------------------------------------------------------
 // --------------------------------------------------------------------------
 // string utils
@@ -52,6 +57,7 @@ void					failExit(const char *fmt, ...)
 	va_end(ap);
 	printTop(CONSOLE_RESET);
 	printTop("\nPress B to exit\n");
+	clearBottom();
 
 	while (aptMainLoop()) {
 		gspWaitForVBlank();

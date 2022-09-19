@@ -19,89 +19,6 @@ static unsigned char decode_hex(char c)
     return 0; // pls
 }
 
-static int do_crypto_request(char *path, char *outbuf)
-{
-    unsigned char inbuf[MAX_CRYPT_BYTES];
-    unsigned char iv[0x10];
-    
-    uint8_t *FCRAM = (uint8_t *)0x15000000;
-    
-    PS_AESAlgorithm algo = PS_ALGORITHM_CBC_ENC;
-    
-    PS_AESKeyType ktype = PS_KEYSLOT_0D;
-    
-    int buf_l = 0;
-    
-    for (int i = 0; i < MAX_CRYPT_BYTES; i++)
-    {
-        inbuf[i] = 0;
-        outbuf[i] = 0;
-    }
-    
-    char *dup = strdup(path);
-    int param = 0;
-    int ofs = 0;
-    int l = 0;
-    
-    char *p = strtok(dup+1, "/");
-    
-    p = strtok(NULL, "/"); // "crypt/"
-    
-    while (p != NULL)
-    {
-        param++;
-        switch (param)
-        {
-            case 1:
-                algo = (PS_AESAlgorithm)atoi(p);
-                break;
-            case 2:
-                ktype = (PS_AESKeyType)atoi(p);
-                break;
-            case 3:
-                for (int i = 0; i < 0x20; i += 2)
-                {
-                    iv[i/2] = (decode_hex(p[i]) << 4) | decode_hex(p[i+1]);
-                }
-                break;
-            case 4:
-                ofs = 0;
-                l = strlen(p);
-                buf_l = l/2;
-                while (ofs < l)
-                {
-                    inbuf[ofs/2] = (decode_hex(p[ofs]) << 4) | decode_hex(p[ofs+1]);
-                    ofs += 2;
-                }
-                break;
-            case 5:
-                for (int i = 0; i < 0x20; i += 2)
-                {
-                    FCRAM[i/2] = (decode_hex(p[i]) << 4) | decode_hex(p[i+1]);
-                }
-                break;
-            default:
-                break;
-        }
-        p = strtok(NULL, "/");
-    }
-    
-    const char * algos[6] = {"CBC Enc", "CBC Dec", "CTR Enc", "CTR Dec", "CCM Enc", "CCM Dec"};
-    const int ktypes[10] = {0xD, 0x2D, 0x31, 0x38, 0x32, 0x39, 0x2E, 0x7, 0x36, 0x39};
-    
-    int usedkeyslot = (ktype & 0x80) ? (ktype & 0x3F) : (ktypes[ktype]);
-    
-    
-    printTop("Crypto Request: %s, keyslot 0x%X, 0x%X bytes.\n", algos[algo], (int)usedkeyslot, buf_l);
-    
-    PS_EncryptDecryptAes((uint32_t)buf_l, (unsigned char *)inbuf, (unsigned char *)outbuf, algo, ktype, iv);
-    
-    
-    free(dup);
-    
-    return buf_l;
-}
-
 int is_crypt_request(http_request *request)
 {
     if (!startWith(request->path, "/crypt/") || strlen(request->path) < 8) // Ensure valid tokenization
@@ -206,6 +123,90 @@ int is_crypt_request(http_request *request)
     free(dup);
 	return valid;
 }
+static int do_crypto_request(char *path, char *outbuf)
+{
+    unsigned char inbuf[MAX_CRYPT_BYTES];
+    unsigned char iv[0x10];
+
+    uint8_t *FCRAM = (uint8_t *)0x15000000;
+
+    PS_AESAlgorithm algo = PS_ALGORITHM_CBC_ENC;
+
+    PS_AESKeyType ktype = PS_KEYSLOT_0D;
+
+    int buf_l = 0;
+
+    for (int i = 0; i < MAX_CRYPT_BYTES; i++)
+    {
+        inbuf[i] = 0;
+        outbuf[i] = 0;
+    }
+
+    char *dup = strdup(path);
+    int param = 0;
+    int ofs = 0;
+    int l = 0;
+
+    char *p = strtok(dup+1, "/");
+
+    p = strtok(NULL, "/"); // "crypt/"
+
+    while (p != NULL)
+    {
+        param++;
+        switch (param)
+        {
+            case 1:
+                algo = (PS_AESAlgorithm)atoi(p);
+                break;
+            case 2:
+                ktype = (PS_AESKeyType)atoi(p);
+                break;
+            case 3:
+                for (int i = 0; i < 0x20; i += 2)
+                {
+                    iv[i/2] = (decode_hex(p[i]) << 4) | decode_hex(p[i+1]);
+                }
+                break;
+            case 4:
+                ofs = 0;
+                l = strlen(p);
+                buf_l = l/2;
+                while (ofs < l)
+                {
+                    inbuf[ofs/2] = (decode_hex(p[ofs]) << 4) | decode_hex(p[ofs+1]);
+                    ofs += 2;
+                }
+                break;
+            case 5:
+                for (int i = 0; i < 0x20; i += 2)
+                {
+                    FCRAM[i/2] = (decode_hex(p[i]) << 4) | decode_hex(p[i+1]);
+                }
+                break;
+            default:
+                break;
+        }
+        p = strtok(NULL, "/");
+    }
+
+    const char * algos[6] = {"CBC Enc", "CBC Dec", "CTR Enc", "CTR Dec", "CCM Enc", "CCM Dec"};
+    const int ktypes[10] = {0xD, 0x2D, 0x31, 0x38, 0x32, 0x39, 0x2E, 0x7, 0x36, 0x39};
+
+    int usedkeyslot = (ktype & 0x80) ? (ktype & 0x3F) : (ktypes[ktype]);
+
+
+    printTop("Crypto Request: %s, keyslot 0x%X, 0x%X bytes.\n", algos[algo], (int)usedkeyslot, buf_l);
+    
+    PS_EncryptDecryptAes((uint32_t)buf_l, (unsigned char *)inbuf, (unsigned char *)outbuf, algo, ktype, iv);
+
+
+    free(dup);
+
+    return buf_l;
+}
+
+
 
 http_response *get_crypt_handler_response(http_request *request)
 {
