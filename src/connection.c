@@ -1,6 +1,6 @@
 #include "httpserver.h"
 
-static void			compute_path(http_request *request)
+static void compute_path(http_request *request)
 {
 	// Default value
 	request->path = "/";
@@ -17,9 +17,9 @@ static void			compute_path(http_request *request)
 		request->path = path;
 }
 
-void				send_response(s32 client_id, http_response *response)
+void send_response(s32 client_id, http_response *response)
 {
-	char	buffer[256];
+	char buffer[256];
 	memset(buffer, 0, 256);
 	sprintf(buffer, HTTP_HEADER_TEMPLATE, response->code, get_http_code_name(response->code));
 
@@ -44,7 +44,7 @@ void				send_response(s32 client_id, http_response *response)
 	send(client_id, response->payload, response->payload_len, 0);
 }
 
-void				manage_connection(http_server *data, char *payload)
+void manage_connection(http_server *data, char *payload)
 {
 	http_request *request = memalloc(sizeof(http_request));
 	request->payload = payload;
@@ -66,13 +66,13 @@ void				manage_connection(http_server *data, char *payload)
 	compute_path(request);
 
 	// get request handler
-	http_request_handler	*handler = get_request_handler(request);
+	http_request_handler *handler = get_request_handler(request);
 
 	// prehandle the request
 	if (handler && handler->before_response != NULL)
 		handler->before_response(data, request);
 
-	http_response			*response = NULL;
+	http_response *response = NULL;
 
 	// use the handler to try to generate a response to send
 	if (handler)

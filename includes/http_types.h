@@ -6,12 +6,12 @@
 
 typedef struct
 {
-	u8					running;
-	struct sockaddr_in	client_addr;
-	struct sockaddr_in	server_addr;
-	u32					client_length;
-	s32					server_id;
-	s32					client_id;
+	u8 running;
+	struct sockaddr_in client_addr;
+	struct sockaddr_in server_addr;
+	u32 client_length;
+	s32 server_id;
+	s32 client_id;
 } http_server;
 
 typedef enum
@@ -30,20 +30,20 @@ typedef enum
 
 typedef struct
 {
-	http_request_type	type;
-	char				*agent;
-	char				*header;
-	char				*hostname;
-	char				*path;
-	char				*payload;
+	http_request_type type;
+	char *agent;
+	char *header;
+	char *hostname;
+	char *path;
+	char *payload;
 } http_request;
 
 typedef struct
 {
-	int					code;
-	char				*content_type;
-    int                 payload_len;
-	char				*payload;
+	int code;
+	char *content_type;
+	int payload_len;
+	char *payload;
 } http_response;
 
 typedef int (*is_handler)(http_request*);
@@ -52,11 +52,11 @@ typedef void (*situational_handle)(http_server*, http_request*);
 
 typedef struct
 {
-	http_request_type	type;
-	is_handler			check;
-	compute_response	generate_response;
-	situational_handle	before_response;
-	situational_handle	after_response;
+	http_request_type type;
+	is_handler check;
+	compute_response generate_response;
+	situational_handle before_response;
+	situational_handle after_response;
 } http_request_handler;
 
 typedef struct s_handler_array

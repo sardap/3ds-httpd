@@ -43,7 +43,7 @@ int						startWith(char *str, char *start)
 
 // --------------------------------------------------------------------------
 // others utils
-void					failExit(const char *fmt, ...)
+void failExit(const char *fmt, ...)
 {
 
 	if(app_data->server_id > 0) close(app_data->server_id);

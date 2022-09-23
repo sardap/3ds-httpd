@@ -54,6 +54,7 @@ int	main(int ac, char **av)
 					port = atoi(keybuf);
 					destroy();
 					init(port);
+					manual(manualpage);
 				} else printTop("Port needs to be a value between 1-65565\n");
 			} else
 				printTop("swkbd event: %d\n", swkbdGetResult(&swkbd));

@@ -23,12 +23,10 @@
 __attribute__((unused))
 static http_response DEFAULT_PAGE = {.code = 501, .content_type = "Content-Type: text/html\r\n", .payload = "<html><title>501 - Not Implemented</title><h1>501 - Not Implemented</h1></html>"};
 extern PrintConsole topScreen, bottomScreen;
-void					init();
-int						loop();
-void					destroy();
-void					manage_connection(http_server *data, char *payload);
-void					register_handler(http_request_type type,
-	is_handler check, compute_response get_response,
-	situational_handle before_response, situational_handle after_response);
-void					init_handlers();
+void init();
+int loop();
+void destroy();
+void manage_connection(http_server *data, char *payload);
+void register_handler(http_request_type type, is_handler check, compute_response get_response, situational_handle before_response, situational_handle after_response);
+void init_handlers();
 #endif

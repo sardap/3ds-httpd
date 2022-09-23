@@ -1,19 +1,19 @@
 #include "httpserver.h"
 
-static u32			*socket_buffer = NULL;
-static http_server	data;
-http_server			*app_data = &data;
-static int			ret;
-static char			payload[4098];
+static u32 *socket_buffer = NULL;
+static http_server data;
+http_server *app_data = &data;
+static int ret;
+static char payload[4098];
 PrintConsole topScreen, bottomScreen;
 
-void			socShutdown()
+void socShutdown()
 {
 	printTop("waiting for socExit...\n");
 	socExit();
 }
 
-void			init(int port)
+void init(int port)
 {
 	hidInit(); // input
 	psInit(); // ps, for AES
@@ -73,7 +73,7 @@ void			init(int port)
 	printTop("Ready...\n");
 }
 
-int				loop()
+int loop()
 {
 	data.client_id = accept(data.server_id, (struct sockaddr *) &data.client_addr, &data.client_length);
 	if (data.client_id < 0 && errno != EAGAIN)
@@ -99,7 +99,7 @@ int				loop()
 	return data.running;
 }
 
-void			destroy()
+void destroy()
 {
 	NDMU_UnlockState();
 	NDMU_LeaveExclusiveState();
@@ -109,5 +109,5 @@ void			destroy()
 	socShutdown();
 	gfxExit();
 	hidExit();
-    psExit();
+	psExit();
 }

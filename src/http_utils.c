@@ -1,6 +1,6 @@
 #include "http_utils.h"
 
-http_request_type		get_type(char *str)
+http_request_type get_type(char *str)
 {
 	if (startWith(str, "GET"))
 		return GET;
@@ -23,7 +23,7 @@ http_request_type		get_type(char *str)
 	return UNKNOWN;
 }
 
-char					*get_request_name(http_request_type type)
+char *get_request_name(http_request_type type)
 {
 	switch (type)
 	{
@@ -50,7 +50,7 @@ char					*get_request_name(http_request_type type)
 	}
 }
 
-char				*get_http_code_name(int code)
+char *get_http_code_name(int code)
 {
 	switch (code)
 	{
@@ -145,7 +145,7 @@ char				*get_http_code_name(int code)
 	}
 }
 
-char				*get_browser(char *agent)
+char *get_browser(char *agent)
 {
 	char *browser = "Unknown";
 	if (strstr(agent, "Netscape"))

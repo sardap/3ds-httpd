@@ -13,10 +13,13 @@ char *do_sdcard_request(char *path)
 	
 	FILE *fptr = fopen(realPath,"r");
 	//Thanks to Evie for helping me clean this clusterf*ck
-	if (fptr == NULL) return NULL;
+	if (fptr == NULL)
+	{
+		return "";
+	}
 	fseek(fptr,0,SEEK_END);
 	size_t fileSize = ftell(fptr);
-	printTop("size_t: %u",fileSize);
+	//printTop("size_t: %u",fileSize);
 	fseek(fptr, 0, SEEK_SET);
 	
 	/*
@@ -39,10 +42,10 @@ char *do_sdcard_request(char *path)
 http_response *get_sdcard_response(http_request *request)
 {
 	http_response *response = memalloc(sizeof(http_response));
-	response->code = (access(strchr(strchr(request->path, '/') + 1, '/'), F_OK) == 0) ? 200 : 404;
+	char * payload = do_sdcard_request(request->path);
+	response->code = (payload == NULL) ? 200 : 404;
 	const char content_type[] = "Content-Type: text/html\r\n";
 	response->content_type = memdup(content_type, sizeof(content_type));
-	char * payload = do_sdcard_request(request->path);
 	response->payload = payload;
 	response->payload_len = strlen(payload);
 	return response;    

@@ -20,7 +20,7 @@ static http_request_handler_array	*alloc_entry()
 		request_handlers = tmp2;
 	return tmp2;
 }
-void							register_handler(http_request_type type, is_handler check, compute_response get_response, situational_handle before_response, situational_handle after_response)
+void register_handler(http_request_type type, is_handler check, compute_response get_response, situational_handle before_response, situational_handle after_response)
 {
 	http_request_handler_array	*entry = alloc_entry();
 	if (entry)
@@ -33,7 +33,7 @@ void							register_handler(http_request_type type, is_handler check, compute_re
 	}
 }
 
-http_request_handler			*get_request_handler(http_request *req)
+http_request_handler *get_request_handler(http_request *req)
 {
 	http_request_handler_array	*tmp = request_handlers;
 	while (tmp)
