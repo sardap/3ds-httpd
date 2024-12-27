@@ -1,0 +1,25 @@
+{
+    "files.associations": {
+        "sstream": "c",
+        "httpserver.h": "c",
+        "atomic": "cpp",
+        "*.tcc": "cpp",
+        "bitset": "cpp",
+        "chrono": "cpp",
+        "cmath": "cpp",
+        "functional": "cpp",
+        "istream": "cpp",
+        "limits": "cpp",
+        "optional": "cpp",
+        "streambuf": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "variant": "cpp",
+        "compare": "cpp",
+        "charconv": "cpp",
+        "format": "cpp",
+        "__config": "cpp",
+        "hash_map": "cpp",
+        "content.h": "c"
+    }
+}

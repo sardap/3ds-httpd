@@ -17,11 +17,18 @@
 #define SOC_ALIGN       0x1000
 #define SOC_BUFFERSIZE  0x100000
 
-#define HTTP_HEADER_TEMPLATE "HTTP/1.1 %d %s\r\n"
+#define DEFAULT_PAGE_CONTENT "<html><title>404 Not found</title><h1>404 - Not found</h1></html>"
+#define DEFAULT_PAGE_SIZE sizeof(DEFAULT_PAGE_CONTENT)
+
+#define CONTENT_TYPE_HTML "Content-Type: text/html\r\n"
+#define CONTENT_TYPE_HTML_SIZE sizeof(CONTENT_TYPE_HTML)
+
+#define CONTENT_TYPE_MAX_SIZE 1024
+#define REQUEST_TYPE_MAX_SIZE 10
 
 // silence the unused warning because we use it!
 __attribute__((unused))
-static http_response DEFAULT_PAGE = {.code = 501, .content_type = "Content-Type: text/html\r\n", .payload = "<html><title>501 - Not Implemented</title><h1>501 - Not Implemented</h1></html>"};
+static http_response DEFAULT_PAGE = {.code = 404, .content_type = CONTENT_TYPE_HTML, .payload = DEFAULT_PAGE_CONTENT};
 extern PrintConsole topScreen, bottomScreen;
 void init();
 int loop();

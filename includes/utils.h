@@ -5,6 +5,8 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
+#define MAX_STRLEN_READ 5242880
+
 int	printTop(const char *format, ...);
 int	printBottom(const char *format, ...);
 void clearBottom();

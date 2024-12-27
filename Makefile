@@ -100,6 +100,7 @@ all: $(BUILD)
 #---------------------------------------------------------------------------------
 
 $(BUILD):
+	@./encode_files.sh
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 

@@ -32,7 +32,7 @@ void clearBottom() {
 // --------------------------------------------------------------------------
 // --------------------------------------------------------------------------
 // string utils
-int						startWith(char *str, char *start)
+int startWith(char *str, char *start)
 {
 	if (!str || !start)
 		return (0);
