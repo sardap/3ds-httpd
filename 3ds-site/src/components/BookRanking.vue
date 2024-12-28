@@ -36,7 +36,7 @@ const books: BookRankProps[] = [
     title: 'John Curtin: A Life',
     author: 'David Day',
     year: 1999,
-    picture: '/books/HNI_0005.jpg',
+    picture: '/books/HNI_0006.jpg',
     completed_date: new Date('2024-11-19'),
     rating: '5 Stars',
   },
@@ -45,7 +45,7 @@ const books: BookRankProps[] = [
     title: 'The Big Fella: Jack Lang and the Australian Labor Party, 1891–1949',
     author: 'Bede Nairn',
     year: 1986,
-    picture: '/books/HNI_0006.jpg',
+    picture: '/books/HNI_0005.jpg',
     completed_date: new Date('2024-12-12'),
     rating: '5 Stars',
   },
@@ -53,7 +53,7 @@ const books: BookRankProps[] = [
 
 const booksSorted = ref<BookRankProps[]>([])
 
-type OrderByTypes = 'read-asc' | 'read-desc'
+type OrderByTypes = 'read-asc' | 'read-desc' | 'published-asc' | 'published-desc'
 
 const selectedOrderBy = ref<OrderByTypes>('read-desc')
 
@@ -68,6 +68,12 @@ function orderBy(value: OrderByTypes) {
       booksSorted.value = books.sort(
         (a, b) => b.completed_date.getTime() - a.completed_date.getTime(),
       )
+      break
+    case 'published-asc':
+      booksSorted.value = books.sort((a, b) => a.year - b.year)
+      break
+    case 'published-desc':
+      booksSorted.value = books.sort((a, b) => b.year - a.year)
       break
   }
 }
@@ -86,6 +92,8 @@ onMounted(() => {
     <select v-model="selectedOrderBy">
       <option value="read-desc">Latest read</option>
       <option value="read-asc">Oldest read</option>
+      <option value="published-desc">Latest published</option>
+      <option value="published-asc">Oldest published</option>
     </select>
     <BookRank v-for="book in booksSorted" :key="book.title" v-bind="book" />
   </div>

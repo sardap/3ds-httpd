@@ -1,3 +1,4 @@
+#include <time.h>
 #include "httpserver.h"
 
 static void compute_path(http_request *request)
@@ -9,7 +10,7 @@ static void compute_path(http_request *request)
 
 	// Unknown request type?
 	if (request_type)
-		path += strnlen(request_type, 8) + 1;
+		path += strlen(request_type) + 1;
 	path = strtok(path, " ");
 
 	// If path isn't NULL
@@ -19,15 +20,14 @@ static void compute_path(http_request *request)
 
 void send_response(s32 client_id, http_response *response)
 {
-	const u32 buffer_size = 256;
-	char buffer[buffer_size];
-	memset(buffer, 0, buffer_size);
-	snprintf(buffer, buffer_size, "HTTP/1.1 %d %s\r\n", response->code, get_http_code_name(response->code));
+	char buffer[256];
+	memset(buffer, 0, 256);
+	sprintf(buffer, "HTTP/1.1 %d %s\r\n", response->code, get_http_code_name(response->code));
 
 	// HTTP/1.1 code message
-	send(client_id, buffer, buffer_size, 0);
+	send(client_id, buffer, strlen(buffer), 0);
 	// headers (TODO: Implement a global list?)
-	send(client_id, response->content_type, strnlen(response->content_type, CONTENT_TYPE_MAX_SIZE), 0);
+	send(client_id, response->content_type, strlen(response->content_type), 0);
 
 	// server name
 	send(client_id, "Server: 3ds-httpd\r\n", 19, 0);
@@ -35,15 +35,16 @@ void send_response(s32 client_id, http_response *response)
 	send(client_id, "Connection: close\r\n", 19, 0);
 
 	// payload Length
-	memset(buffer, 0, buffer_size);
-	snprintf(buffer, buffer_size, "Connection-Length: %u\r\n", response->payload_len);
-	send(client_id, buffer, strnlen(buffer, buffer_size), 0);
+	memset(buffer, 0, 256);
+	sprintf(buffer, "Connection-Length: %u\r\n", response->payload_len);
+	send(client_id, buffer, strlen(buffer), 0);
 	// End the header section
 	send(client_id, "\r\n", 2, 0);
 
 	// Send the payload
 	send(client_id, response->payload, response->payload_len, 0);
 }
+
 
 void manage_connection(http_server *data, char *payload)
 {
@@ -90,7 +91,8 @@ void manage_connection(http_server *data, char *payload)
 		response->payload_len = strnlen(DEFAULT_PAGE.payload, DEFAULT_PAGE_SIZE);
 	}
 
-	printTop("[%d]: %s %s (client: %s)\n", response->code, get_request_name(request->type), request->path, inet_ntoa(data->client_addr.sin_addr));
+	time_t now = time(0);
+	printTop("%s [%d]: %s %s (client: %s)\n", ctime(&now), response->code, get_request_name(request->type), request->path, inet_ntoa(data->client_addr.sin_addr));
 	send_response(data->client_id, response);
 
 	// response isn't needed anymore, delete it!

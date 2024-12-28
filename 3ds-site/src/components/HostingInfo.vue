@@ -4,7 +4,7 @@
   <div>
     <p>Yes this very site is hosted on the 2DS pictured below</p>
     <div>
-      <img alt="a photo of a 2DS" src="../assets/2ds.jpg" />
+      <img alt="a photo of a 2DS" src="/2ds.jpg" />
       <p>Also this photo was taken on a 3DS</p>
     </div>
     <br />
@@ -17,10 +17,9 @@
     </p>
     <br />
     <p>
-      Where is the 3ds? The 3ds is inside of my house under the stars plugged in with the battery
-      removed. I then have a server running here with a wireguard VPN setup with a connection to the
-      nginx server hosted in singapore. This site is built in vue and vite with a plugin so it
-      creates a single html file.
+      Where is the 3ds? The 3ds is inside of my house under the stars plugged. I then have a server
+      running here with a wireguard VPN setup with a connection to the nginx server hosted in
+      singapore. This site is built in vue and vite with a plugin so it creates a single html file.
     </p>
     <br />
     <p>What are the specs of the beast running this?</p>

@@ -20,6 +20,22 @@
         "format": "cpp",
         "__config": "cpp",
         "hash_map": "cpp",
-        "content.h": "c"
-    }
+        "content.h": "c",
+        "ratio": "cpp",
+        "string": "cpp",
+        "unordered_map": "c",
+        "numeric": "c",
+        "ostream": "c",
+        "algorithm": "c",
+        "concepts": "c",
+        "ios": "c",
+        "locale": "c",
+        "mutex": "c",
+        "shared_mutex": "c",
+        "stop_token": "c",
+        "__hash_table": "c"
+    },
+    "cSpell.words": [
+        "gziped"
+    ]
 }
