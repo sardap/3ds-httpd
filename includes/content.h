@@ -1,6 +1,9 @@
 #ifndef CONTENT_H
 #define CONTENT_H
 
+extern const unsigned char __3ds_site_dist_favicon_ico[];
+extern const unsigned int __3ds_site_dist_favicon_ico_len;
+
 extern const unsigned char __3ds_site_dist_index_html[];
 extern const unsigned int __3ds_site_dist_index_html_len;
 

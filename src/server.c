@@ -56,7 +56,7 @@ void init(int port)
 	data.client_length = sizeof(data.client_addr);
 
 	// Print network info
-	printTop("Server is starting - http://%s:%i/\n", inet_ntoa(data.server_addr.sin_addr),port);
+	printBottom("Server has started - http://%s:%i/\n", inet_ntoa(data.server_addr.sin_addr),port);
 
 	if ((ret = bind(data.server_id, (struct sockaddr *) &data.server_addr, sizeof(data.server_addr))))
 	{

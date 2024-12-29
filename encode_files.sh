@@ -25,5 +25,6 @@ for file in $TARGET_DIR/*; do
 done
 
 
+encode_file 3ds-site/dist/favicon.ico "src/encoded_favicon.c"
 encode_file 3ds-site/dist/index.html "src/encoded_index.c"
 encode_file 3ds-site/dist/2ds.jpg "src/encoded_2ds.c"
