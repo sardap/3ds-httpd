@@ -31,22 +31,30 @@ const { t, locale } = useI18n({
         author: 'Bede Nairn',
         rating: '5 Stars',
       },
+      book_6: {
+        title: 'Chifley : A Life',
+        author: 'David Day',
+        rating: '5 Stars',
+      },
     },
     kr: {
       book_1: {
         rating: '별5개',
       },
       book_2: {
-        rating: '5 별',
+        rating: '별5개',
       },
       book_3: {
-        rating: '5 별',
+        rating: '별5개',
       },
       book_4: {
-        rating: '5 별',
+        rating: '별5개',
       },
       book_5: {
-        rating: '5 별',
+        rating: '별5개',
+      },
+      book_6: {
+        rating: '별5개',
       },
     },
   },
@@ -104,6 +112,16 @@ function get_books(): BookRankProps[] {
       rating: t('book_5.rating'),
       isbn: '9781761280740',
     },
+    {
+      id: 6,
+      title: t('book_6.title'),
+      author: t('book_6.author'),
+      year: 2001,
+      picture: '/books/HNI_0007.jpg',
+      completed_date: new Date('2025-01-20'),
+      rating: t('book_6.rating'),
+      isbn: '9781460706169',
+    }
   ]
 }
 
